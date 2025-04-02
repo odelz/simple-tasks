@@ -1,10 +1,6 @@
 {
   "version": 2,
   "routes": [
-    {
-      "src": "/api",
-      "methods": ["GET"],
-      "dest": "/api"
-    }
+    { "src": "/api/(.*)", "dest": "/api/$1" }
   ]
 }

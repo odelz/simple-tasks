@@ -40,13 +40,17 @@ export async function GET(request: Request) {
       query += " ORDER BY due_date ASC NULLS LAST, created_at DESC"
 
       const result = await client.query(query, queryParams)
-      return Response.json(result.rows)
+      return new Response(JSON.stringify(result.rows), { status: 200, headers: { "Content-Type": "application/json" } })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to fetch tasks" }, { status: 500 })
+
+    return new Response(JSON.stringify({ error: "Failed to fetch tasks" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 
@@ -57,12 +61,15 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!title) {
-      return Response.json({ error: "Title is required" }, { status: 400 })
+      return new Response(JSON.stringify({ error: "Title is required" }), { status: 400 })
     }
 
     // Validate status if provided
     if (status && !["TODO", "IN_PROGRESS", "DONE"].includes(status)) {
-      return Response.json({ error: "Status must be one of: TODO, IN_PROGRESS, DONE" }, { status: 400 })
+      return new Response(JSON.stringify({ error: "Status must be one of: TODO, IN_PROGRESS, DONE" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
     }
 
     const pool = getPool()
@@ -76,13 +83,26 @@ export async function POST(request: Request) {
         [title, description || null, status || "TODO", due_date ? new Date(due_date) : null],
       )
 
-      return Response.json(result.rows[0], { status: 201 })
+      if (result.rows.length === 0) {
+        return new Response(JSON.stringify({ error: "Task not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      return new Response(JSON.stringify(result.rows[0]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to create task" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to update task" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 

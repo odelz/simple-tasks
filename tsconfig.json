@@ -1,18 +1,35 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
-    "rootDir": "./",
-    "baseUrl": ".",
+    "target": "es6", // Target modern JavaScript (ES6)
+    "module": "commonjs", // Use CommonJS for Node.js compatibility
+    "strict": true, // Enable strict type-checking
+    "esModuleInterop": true, // Allow default imports from CommonJS modules
+    "skipLibCheck": true, // Skip type checking for library files
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing in imports
+    "outDir": "./dist", // Output compiled files to the "dist" directory
+    "rootDir": "./", // Root directory for TypeScript files
+    "baseUrl": ".", // Base directory for module resolution
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": ["./*"] // Alias "@" to the root directory
+    },
+    "lib": [
+      "dom", // Include DOM types for browser-based JavaScript
+      "esnext" // Include modern JavaScript features
+    ],
+    "allowJs": true, // Allow JavaScript files in the project
+    "noEmit": false, // Emit compiled JavaScript files
+    "incremental": true, // Enable incremental compilation
+    "moduleResolution": "node", // Resolve modules using Node.js conventions
+    "resolveJsonModule": true, // Allow importing JSON files
+    "isolatedModules": true // Ensure each file can be transpiled in isolation
   },
-  "include": ["api/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "api/**/*", // Include all files in the "api" directory
+    "lib/**/*" // Include all files in the "lib" directory
+  ],
+  "exclude": [
+    "node_modules", // Exclude dependencies
+    "dist", // Exclude the output directory
+    "public" // Exclude static HTML files in the "public" directory
+  ]
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <ul id="tasks-list">
+    <!-- Tasks will be dynamically populated here -->
+  </ul>
+
+  <script>
+    // Fetch tasks from the API and populate the list
+    async function fetchTasks() {
+      try {
+        const response = await fetch("/api/tasks");
+        if (response.ok) {
+          const tasks = await response.json();
+          const tasksList = document.getElementById("tasks-list");
+
+          tasks.forEach(task => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${task.title} - ${task.status}`;
+            tasksList.appendChild(listItem);
+          });
+        } else {
+          alert("Failed to fetch tasks. Please check your authentication.");
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        alert("An error occurred while fetching tasks.");
+      }
+    }
+
+    // Call the function to fetch tasks when the page loads
+    fetchTasks();
+  </script>
+</body>
+</html>

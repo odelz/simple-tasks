@@ -12,16 +12,24 @@ export async function GET(request: Request, { params }: { params: { id: string }
       const result = await client.query("SELECT * FROM tasks WHERE id = $1", [id])
 
       if (result.rows.length === 0) {
-        return Response.json({ error: "Task not found" }, { status: 404 })
-      }
+        return new Response(JSON.stringify({ error: "Task not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        })      }
 
-      return Response.json(result.rows[0])
+        return new Response(JSON.stringify(result.rows[0]), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to fetch task" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to fetch task" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 
@@ -33,7 +41,10 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     // Validate status if provided
     if (status && !["TODO", "IN_PROGRESS", "DONE"].includes(status)) {
-      return Response.json({ error: "Status must be one of: TODO, IN_PROGRESS, DONE" }, { status: 400 })
+      return new Response(JSON.stringify({ error: "Status must be one of: TODO, IN_PROGRESS, DONE" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
     }
 
     const pool = getPool()
@@ -81,16 +92,25 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       const result = await client.query(query, values)
 
       if (result.rows.length === 0) {
-        return Response.json({ error: "Task not found" }, { status: 404 })
+        return new Response(JSON.stringify({ error: "Task not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        })
       }
 
-      return Response.json(result.rows[0])
+      return new Response(JSON.stringify(result.rows[0]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to update task" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to update task" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 
@@ -102,7 +122,10 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
     // Validate status
     if (!status || !["TODO", "IN_PROGRESS", "DONE"].includes(status)) {
-      return Response.json({ error: "Valid status (TODO, IN_PROGRESS, DONE) is required" }, { status: 400 })
+      return new Response(JSON.stringify({ error: "Valid status (TODO, IN_PROGRESS, DONE) is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
     }
 
     const pool = getPool()
@@ -118,16 +141,25 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       )
 
       if (result.rows.length === 0) {
-        return Response.json({ error: "Task not found" }, { status: 404 })
+        return new Response(JSON.stringify({ error: "Task not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        })
       }
 
-      return Response.json(result.rows[0])
+      return new Response(JSON.stringify(result.rows[0]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to update task status" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to update task status" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 
@@ -143,16 +175,25 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       const result = await client.query("DELETE FROM tasks WHERE id = $1 RETURNING id", [id])
 
       if (result.rows.length === 0) {
-        return Response.json({ error: "Task not found" }, { status: 404 })
+        return new Response(JSON.stringify({ error: "Task not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        })
       }
 
-      return Response.json({ message: "Task deleted successfully" })
+      return new Response(JSON.stringify({ message: "Task deleted successfully" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     } finally {
       client.release()
     }
   } catch (error) {
     console.error("Database error:", error)
-    return Response.json({ error: "Failed to delete task" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to delete task" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
 
