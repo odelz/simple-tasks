@@ -2,19 +2,18 @@ export default async function handler(req: any, res: any): Promise<void> {
   try {
     console.log("Request method:", req.method);
 
+    // Add CORS headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    if (req.method === "OPTIONS") {
+      res.writeHead(204).end(); // Handle preflight requests
+      return;
+    }
+
     if (req.method === "POST") {
-      // Parse the request body
-      let body = "";
-      for await (const chunk of req) {
-        body += chunk;
-      }
 
-      console.log("Raw body:", body);
-
-      const { username, password } = JSON.parse(body);
-
-      console.log("Parsed username:", username);
-      console.log("Parsed password:", password);
+      const { username, password } = req.body;
 
       // Validate credentials
       if (
