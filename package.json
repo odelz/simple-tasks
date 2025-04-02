@@ -1,0 +1,23 @@
+{
+  "name": "vercel-serverless-api",
+  "version": "1.0.0",
+  "description": "A serverless API project deployed on Vercel",
+  "main": "api/hello.ts",
+  "scripts": {
+    "dev": "ts-node api/hello.ts",
+    "build": "tsc",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "@types/pg": "^8.11.11",
+    "pg": "^8.14.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7"
+  },
+  "engines": {
+    "node": ">=14.x"
+  }
+}
