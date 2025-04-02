@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPool = void 0;
-const pg_1 = require("pg");
+import { Pool } from "pg";
 // Create a singleton pool that can be reused across requests
 let pool;
 function getPool() {
     if (!pool) {
-        pool = new pg_1.Pool({
+        pool = new Pool({
             connectionString: process.env.DATABASE_URL,
             max: 10,
             idleTimeoutMillis: 30000,
@@ -21,4 +18,4 @@ function getPool() {
     }
     return pool;
 }
-exports.getPool = getPool;
+export { getPool };

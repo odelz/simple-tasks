@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,15 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DELETE = exports.PATCH = exports.PUT = exports.GET = void 0;
-const db_1 = require("@/lib/db");
+import { getPool } from "@/lib/db";
 // GET a single task by ID
-function GET(request, { params }) {
+export function GET(request, { params }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const id = params.id;
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 const result = yield client.query("SELECT * FROM tasks WHERE id = $1", [id]);
@@ -44,9 +41,8 @@ function GET(request, { params }) {
         }
     });
 }
-exports.GET = GET;
 // PUT update a task
-function PUT(request, { params }) {
+export function PUT(request, { params }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const id = params.id;
@@ -58,7 +54,7 @@ function PUT(request, { params }) {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 // Build dynamic update query
@@ -116,9 +112,8 @@ function PUT(request, { params }) {
         }
     });
 }
-exports.PUT = PUT;
 // PATCH update task status
-function PATCH(request, { params }) {
+export function PATCH(request, { params }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const id = params.id;
@@ -130,7 +125,7 @@ function PATCH(request, { params }) {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 const result = yield client.query(`UPDATE tasks 
@@ -161,13 +156,12 @@ function PATCH(request, { params }) {
         }
     });
 }
-exports.PATCH = PATCH;
 // DELETE a task
-function DELETE(request, { params }) {
+export function DELETE(request, { params }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const id = params.id;
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 const result = yield client.query("DELETE FROM tasks WHERE id = $1 RETURNING id", [id]);
@@ -195,4 +189,3 @@ function DELETE(request, { params }) {
         }
     });
 }
-exports.DELETE = DELETE;

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,18 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.POST = exports.GET = void 0;
-const db_1 = require("@/lib/db");
+import { getPool } from "@/lib/db";
 // GET all tasks with optional filtering
-function GET(request) {
+export function GET(request) {
     return __awaiter(this, void 0, void 0, function* () {
         const { searchParams } = new URL(request.url);
         const status = searchParams.get("status");
         const dueBefore = searchParams.get("due_before");
         const dueAfter = searchParams.get("due_after");
         try {
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 let query = "SELECT * FROM tasks";
@@ -60,9 +57,8 @@ function GET(request) {
         }
     });
 }
-exports.GET = GET;
 // POST create a new task
-function POST(request) {
+export function POST(request) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { title, description, status, due_date } = yield request.json();
@@ -77,7 +73,7 @@ function POST(request) {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            const pool = (0, db_1.getPool)();
+            const pool = getPool();
             const client = yield pool.connect();
             try {
                 const result = yield client.query(`INSERT INTO tasks (title, description, status, due_date) 
@@ -107,4 +103,3 @@ function POST(request) {
         }
     });
 }
-exports.POST = POST;
