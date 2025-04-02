@@ -1,6 +1,4 @@
 export default async function handler(req: any, res: any): Promise<void> {
-  console.log("AUTH_USERNAME:", process.env.AUTH_USERNAME);
-console.log("AUTH_PASSWORD:", process.env.AUTH_PASSWORD);
   try {
     console.log("Request method:", req.method);
 
