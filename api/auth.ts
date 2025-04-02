@@ -16,7 +16,12 @@ export default async function handler(req: any, res: any): Promise<void> {
 
     if (req.method === "POST") {
       let body = req.body; // Initialize parsedBody with req.body
-
+      const contentType = req.headers["content-type"];
+      if (contentType === "application/x-www-form-urlencoded") {
+        // Parse URL-encoded body
+        const urlEncodedBody = new URLSearchParams(body);
+        body = Object.fromEntries(urlEncodedBody.entries());
+      }
       const username = body.username;
       const password = body.password;
 
