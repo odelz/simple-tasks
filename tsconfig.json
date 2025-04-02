@@ -3,7 +3,6 @@
       "compilerOptions": {
         "module": "ESNext", // Use ES modules
         "target": "ES6", // Target modern JavaScript
-        "outDir": "./dist", // Output directory
         "moduleResolution": "node", // Resolve modules using Node.js conventions
         "esModuleInterop": true, // Allow default imports from CommonJS modules
         "strict": true, // Enable strict type-checking
