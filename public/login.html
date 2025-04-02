@@ -11,7 +11,8 @@
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-
+    console.log("Username:", username);
+    console.log("Password:", password);
     const response = await fetch('/api/auth', {
       method: 'POST',
       headers: {
