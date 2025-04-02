@@ -4,8 +4,8 @@
   "description": "A serverless API project deployed on Vercel",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "start": "node lib/db-setup.js"
+    "build": "echo 'No build step required for Vercel'", 
+    "start": "vercel dev"
   },
   "dependencies": {
     "@types/pg": "^8.11.11",
