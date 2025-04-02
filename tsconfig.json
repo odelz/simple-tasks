@@ -15,5 +15,5 @@
       },
       
       "include": ["api/**/*", "lib/**/*"], // Include relevant files
-      "exclude": ["node_modules", "dist"] // Exclude unnecessary files
+      "exclude": ["node_modules"]
     }

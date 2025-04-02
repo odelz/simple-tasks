@@ -1,12 +1,20 @@
 export default async function handler(req: any, res: any): Promise<void> {
-  if (req.method === "POST") {
-    try {
+  try {
+    console.log("Request method:", req.method);
+
+    if (req.method === "POST") {
       // Parse the request body
       let body = "";
       for await (const chunk of req) {
         body += chunk;
       }
+
+      console.log("Raw body:", body);
+
       const { username, password } = JSON.parse(body);
+
+      console.log("Parsed username:", username);
+      console.log("Parsed password:", password);
 
       // Validate credentials
       if (
@@ -19,13 +27,13 @@ export default async function handler(req: any, res: any): Promise<void> {
         res.writeHead(401, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ message: "Invalid credentials" }));
       }
-    } catch (error) {
-      console.error("Error processing login request:", error);
-      res.writeHead(500, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "Internal Server Error" }));
+    } else {
+      res.writeHead(405, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Method not allowed" }));
     }
-  } else {
-    res.writeHead(405, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Method not allowed" }));
+  } catch (error) {
+    console.error("Error processing login request:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal Server Error" }));
   }
 }
