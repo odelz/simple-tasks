@@ -1,19 +1,34 @@
-import { NextApiRequest, NextApiResponse } from "next";
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: Request): Promise<Response> {
   if (req.method === "POST") {
-    const { username, password } = req.body;
+    try {
+      const { username, password } = await req.json();
 
-    // Validate credentials
-    if (
-      username === process.env.AUTH_USERNAME &&
-      password === process.env.AUTH_PASSWORD
-    ) {
-      res.status(200).json({ message: "Login successful" });
-    } else {
-      res.status(401).json({ message: "Invalid credentials" });
+      // Validate credentials
+      if (
+        username === process.env.AUTH_USERNAME &&
+        password === process.env.AUTH_PASSWORD
+      ) {
+        return new Response(JSON.stringify({ message: "Login successful" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      } else {
+        return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    } catch (error) {
+      console.error("Error processing login request:", error);
+      return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    return new Response(JSON.stringify({ message: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
